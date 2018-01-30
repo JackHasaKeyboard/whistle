@@ -1,0 +1,23 @@
+* {
+	color: #67c1f5;
+	background: #161920;
+}
+
+h3 {
+	margin: 0;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid gray;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	width: 160px;
+}
+
+li span {
+	float: right;
+}

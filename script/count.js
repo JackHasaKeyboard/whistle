@@ -1,19 +1,33 @@
-const steamUserInventory = require('steam-user-inventory');
-const fs = require('fs');
+const xhr = new XMLHttpRequest;
+xhr.open('GET', 'http://steamcommunity.com/profiles/76561198065277457/inventory/json/440/2');
+
+const metal = {
+	'Refined Metal': '2675',
+	'Reclaimed Metal': '5564',
+	'Scrap Metal': '2674'
+}
 
 stock = {};
-steamUserInventory('76561198065277457', '440/2/').then(function(data) {
-	['Refined Metal', 'Reclaimed Metal', 'Scrap Metal'].forEach(function(grade) {
-		var i = 0;
+xhr.onreadystatechange = function() {
+	if (this.readyState == 4 /* done */) {
+		result = JSON.parse(xhr.responseText);
 
-		data.forEach(function(item) {
-			if (item.name == grade) {
-				i += 1;
+		for (var grade in metal) {
+			var i = 0;
+
+			for (var key in result.rgInventory) {
+				var item = result.rgInventory[key];
+
+				if (item.classid == metal[grade]) {
+					i++;
+				}
+
+				stock[grade] = i;
 			}
-		});
+		}
 
-		stock[grade] = i;
-	});
+		Cookies.set('stock', stock);
+	}
+};
 
-	fs.writeFile('../metal.json', JSON.stringify(stock));
-});
+xhr.send();

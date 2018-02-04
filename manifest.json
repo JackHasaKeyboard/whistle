@@ -7,6 +7,6 @@
 		"default_popup": "html/popup.html"
 	},
 	"web_accessible_resources": [
-		"metal.json"
+		"conf.json"
 	]
 }

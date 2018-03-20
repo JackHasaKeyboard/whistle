@@ -1,26 +1,37 @@
 $.getJSON('../conf.json', function(conf) {
-	const xhr = new XMLHttpRequest;
-	xhr.open('GET', 'http://steamcommunity.com/profiles/' + conf.user + '/inventory/json/' + conf.data + '/2');
+	chrome.alarms.create(
+		'stockTaker',
+		{
+			periodInMinutes: conf.interval
+		}
+	);
 
-	const metal = {
-		'Refined Metal': '2675',
-		'Reclaimed Metal': '5564',
-		'Scrap Metal': '2674'
-	}
+	chrome.alarms.onAlarm.addListener(function() {
+		const xhr = new XMLHttpRequest;
 
-	stock = {};
-	xhr.onreadystatechange = function() {
-		if (this.readyState == 4 /* done */) {
-			result = JSON.parse(xhr.responseText);
+		xhr.open('GET', 'http://steamcommunity.com/profiles/' + conf.user + '/inventory/json/440/2');
 
-			for (var grade in metal) {
-				var i = 0;
+		const metal = {
+			'Refined Metal': '2675',
+			'Reclaimed Metal': '5564',
+			'Scrap Metal': '2674'
+		}
 
-				for (var key in result.rgInventory) {
-					var item = result.rgInventory[key];
+		xhr.onreadystatechange = function() {
+			stock = {};
 
-					if (item.classid == metal[grade]) {
-						i++;
+			if (this.readyState == 4 /* done */) {
+				result = JSON.parse(xhr.responseText);
+
+				for (var grade in metal) {
+					var i = 0;
+
+					for (var key in result.rgInventory) {
+						var item = result.rgInventory[key];
+
+						if (item.classid == metal[grade]) {
+							i++;
+						}
 					}
 
 					stock[grade] = i;
@@ -28,8 +39,8 @@ $.getJSON('../conf.json', function(conf) {
 			}
 
 			Cookies.set('stock', stock);
-		}
-	};
+		};
 
-	xhr.send();
+		xhr.send();
+	});
 });

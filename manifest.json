@@ -8,5 +8,17 @@
 	},
 	"web_accessible_resources": [
 		"conf.json"
+	],
+	"background": {
+		"scripts": [
+			"script/jquery-3.2.1.min.js",
+			"script/cookie.js",
+			"script/count.js"
+		]
+	},
+	"permissions": [
+		"cookies",
+		"alarms",
+		"http://steamcommunity.com/"
 	]
 }

@@ -12,9 +12,9 @@ $.getJSON('../conf.json', function(conf) {
 		xhr.open('GET', 'http://steamcommunity.com/profiles/' + conf.user + '/inventory/json/440/2');
 
 		const metal = {
-			'Refined Metal': '2675',
+			'Refined Metal': '2674',
 			'Reclaimed Metal': '5564',
-			'Scrap Metal': '2674'
+			'Scrap Metal': '2675'
 		}
 
 		xhr.onreadystatechange = function() {

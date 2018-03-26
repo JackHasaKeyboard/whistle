@@ -36,10 +36,10 @@ $.getJSON('../conf.json', function(conf) {
 
 					stock[grade] = i;
 				}
-			}
 
-			Cookies.set('stock', stock);
-		};
+				Cookies.set('stock', stock);
+			}
+		}
 
 		xhr.send();
 	});
